@@ -1,0 +1,1 @@
+program{ int a b; char c, d; a = b + 3; }

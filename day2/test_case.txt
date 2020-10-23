@@ -1,0 +1,12 @@
+auto
+test
+asdf asdf
+asdf
+1.1
+#macro_line
+asdf 1.1
+1a
+a1
+1.
+.1
+1
