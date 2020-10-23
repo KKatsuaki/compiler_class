@@ -1,15 +1,16 @@
 # parm for files
-LEX_SRC=lex_file.l
+PROGRAM=day3
+LEX_SRC=$(PROGRAM).l
+YACC_SRC=$(PROGRAM).y
+YACC_OUT=y.tab.c
 LEX_OUT=lex.yy.c
-YACC_SRC=yacc_file.y
-YACC_OUT=y.tab.c 
-PROGRAM=a.out
 TEST_FILE=test.ex
 
 # compliers
 LEX=flex
 YACC=yacc
 CC=gcc
+CFLAGS = -Wall -ll -ly
 
 all: $(PROGRAM)
 
@@ -21,16 +22,16 @@ status:
 	@$(CC) --version
 
 $(PROGRAM) : $(YACC_OUT)
-	@$(CC) $(YACC_OUT) -ll -ly -o $(PROGRAM) --no-warnings
+	$(CC) $(YACC_OUT) -o $(PROGRAM) $(CFLAGS)
 
 $(LEX_OUT) : $(LEX_SRC)
-	@$(LEX) $(LEX_SRC)
+	$(LEX) $(LEX_SRC)
 
 $(YACC_OUT): $(YACC_SRC) $(LEX_OUT)
-	@$(YACC) $(YACC_SRC)
+	$(YACC) $(YACC_SRC)
 
 test:	$(PROGRAM)
-	@./$(PROGRAM) $(TEST_FILE)
+	./$(PROGRAM) $(TEST_FILE)
 
 clean:
 	@rm *.c *~

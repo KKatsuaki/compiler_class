@@ -1,6 +1,5 @@
 %{
-#include "list.h"
-
+int lines=0;
 %}
 
 %%
