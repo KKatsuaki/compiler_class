@@ -1,2 +1,2 @@
 # complier_class
-This is the repo just for the compiler class
+This is the repo for the compiler class
