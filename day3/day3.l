@@ -13,7 +13,10 @@
 "}" return RBRACE;
 "(" return LP;
 ")" return RP;
-[a-z] {yylval = (yytext[0] % 26); return IDENT;}
+[a-z] {
+yylval = yytext[0] - 'a';
+    return IDENT;
+}
 [0-9]+ {yylval = atoi(yytext); return NUM;}
 [\t\s\n]+ {}
 . {}
