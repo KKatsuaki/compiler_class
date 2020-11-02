@@ -9,12 +9,22 @@ typedef enum Type{
   NONE,		  
 } Type;
 
+typedef union Val{
+  int int_v;      
+  char *str_v;    
+}Val;             
+
 typedef struct Ident{
   str name;          
   Type t;            
-} Ident;
+  Val val;           
+} Ident;             
 
+extern str _type_str(Type t);
+extern str _ident_str(Ident i, int show_val);
 extern Ident* new_ident(Type type, str name);
-extern void print_ident(Ident ident);
+extern void print_ident(Ident ident, int show_val);
+extern void set_val(Ident *ident, Val *val);
+extern Val get_val(Ident ident);
 
 #endif

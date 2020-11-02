@@ -12,5 +12,6 @@ extern void push(Stack *stack, void *data);
 extern void* pop(Stack *stack);
 extern void* print_stack_info(Stack s);
 extern unsigned int get_size(Stack stack);
+extern Ident* search(str name, Stack s, int eval_method);
 
 #endif

@@ -1,1 +1,0 @@
-program{ int a, b; char c, d; a = e + 3; }

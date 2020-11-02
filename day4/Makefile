@@ -12,7 +12,7 @@ OBJDIR=./obj
 HEADERS_LINKS = ./ident.h ./stack.h
 HEADERS=./headers
 
-
+CC=gcc
 DEBUGGER=gdb
 
 #CC flags
@@ -34,7 +34,7 @@ $(PROGRAM) : $(YACC_OUT) $(LEX_OUT) $(OBJ)
 	$(CC) $(YACC_OUT) $(OBJ) -ly -ll $(CFLAGS) -o $(PROGRAM) 
 
 $(YACC_OUT): $(YACC_SRC)
-	$(YACC) -dv $(YACC_SRC)	    
+	$(YACC) $(YACC_SRC)	    
 
 $(LEX_OUT) : $(LEX_SRC)
 	$(LEX) $(LEX_SRC) 

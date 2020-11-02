@@ -1,1 +1,0 @@
-program{ int a, b; { int a, c; a = b + c;} a = b + 1; }
