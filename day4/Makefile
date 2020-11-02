@@ -7,19 +7,16 @@ TEST_FILE=test_cases/*
 LEX_OUT=lex.yy.c
 YACC_OUT=y.tab.c 
 
-LIBS = ./lib/libstack.so ./lib/libident.so
-LIBDIR=./lib
+OBJ=./obj/libstack.o ./obj/libident.o
+OBJDIR=./obj
 HEADERS_LINKS = ./ident.h ./stack.h
 HEADERS=./headers
 
-# compliers
-LEX=flex
-YACC=yacc
-CC=gcc
 
+DEBUGGER=gdb
 
 #CC flags
-CFLAGS=-ll -ly -Wall -I$(HEADERS)
+CFLAGS=-Wall -I$(HEADERS)
 
 all: $(PROGRAM)
 
@@ -30,22 +27,22 @@ status:
 	@echo
 	@$(CC) --version
 
-debug : $(YACC_OUT) $(LIBS)
-	$(CC) $(YACC_OUT) $(CFLAGS) -L $(LIBDIR) -lstack -lident -o $(PROGRAM) -ggdb
+debug : $(YACC_OUT) $(LEX_OUT) $(OBJ)
+	$(CC) $(YACC_OUT) $(OBJ) -ly -ll  $(CFLAGS) -o $(PROGRAM) -g$(DEBUGGER)
 
-$(PROGRAM) : $(YACC_OUT)
-	$(CC) $(YACC_OUT) $(CFLAGS) -L $(LIBDIR) -lstack -lident -o $(PROGRAM) 
+$(PROGRAM) : $(YACC_OUT) $(LEX_OUT) $(OBJ)
+	$(CC) $(YACC_OUT) $(OBJ) -ly -ll $(CFLAGS) -o $(PROGRAM) 
 
-$(YACC_OUT): $(YACC_SRC) $(LEX_OUT)
-	$(YACC) $(YACC_SRC)	    
+$(YACC_OUT): $(YACC_SRC)
+	$(YACC) -dv $(YACC_SRC)	    
 
-$(LEX_OUT) : $(LEX_SRC) $(LIBS)
+$(LEX_OUT) : $(LEX_SRC)
 	$(LEX) $(LEX_SRC) 
 
-$(LIBS) : 
-	mkdir $(LIBDIR)
-	$(CC) -shared ./src/stack.c $(CFLAGS) -o ./lib/libstack.so
-	$(CC) -shared ./src/ident.c $(CFLAGS) -o ./lib/libident.so
+$(OBJ) : ./src/stack.c ./src/ident.c
+	mkdir $(OBJDIR)
+	$(CC) -c ./src/stack.c $(CFLAGS) -o $(OBJDIR)/libstack.o
+	$(CC) -c ./src/ident.c $(CFLAGS) -o $(OBJDIR)/libident.o
 	ln -s headers/ident.h .
 	ln -s headers/stack.h .
 
@@ -56,5 +53,5 @@ clean :
 	rm -rf *.c *.h *~ src/*~ $(PROGRAM).*
 
 distclean:
-	rm -rf *.c *.h *~ src/*~ $(PROGRAM)* $(LIBDIR)
+	rm -rf *.c *.h *~ src/*~ $(PROGRAM)* $(OBJDIR)
 

@@ -3,6 +3,8 @@
 #include "ident.h"
 Stack s;
 Type tmp;
+ Type tmp2;
+ 
 %}
 			
 %token ADD SUB
@@ -12,6 +14,10 @@ Type tmp;
 %token PROGRAM RBRACE LBRACE
 %token IDENT SEMI EQ WRITE
 %token INT CHAR COLON
+%union{
+  int int_val;
+  char *text;
+}
 %%
 
 S:		Ls
@@ -36,7 +42,7 @@ DECL:		INT IDENTS SEMI {tmp = INT_T;}
 	;
 
 IDENTS:		IDENT {push(&s, (void *)new_ident(tmp, $1));}
-	|	IDENTS COLON IDENT {push(&s, (void*)new_ident(tmp, $3));}
+|	IDENTS COLON IDENT {/*push(&s, (void*)new_ident(tmp, $3));*/}
 	;
 
 STATEMENTS:	STATEMENTS STATEMENT
@@ -61,7 +67,7 @@ T:		T MUL F {$$ = $1 * $3;}
 
 F:		NUM {$$ = $1;}
 	|	LP E RP {$$ = $2;}
-	|	IDENT {}
+|	IDENT {if()}
 	;
 %%
 
