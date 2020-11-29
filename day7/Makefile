@@ -3,26 +3,38 @@
 YACC	= yacc
 LEX	= lex
 CC	= gcc
-#LFLAGS	= -ly -lfl
-LFLAGS	= -ly -ll
+#LFLAGS	= -ly -lfl -I./headers
+LFLAGS	= -ly -ll -I./headers
 
-cmm	: y.tab.c code.o env.o
-	$(CC) y.tab.c code.o env.o $(LFLAGS) -o cmm
+OBJ = obj/code.o obj/env.o
+OBJ_DIR=obj
+PROGRAM = cmm
 
-y.tab.c	: cmm.y lex.yy.c
-	$(YACC) cmm.y
+all : $(PROGRAM)
 
-code.o	: code.c code.h
-	$(CC) -c code.c
+$(PROGRAM)	: y.tab.c $(OBJ)
+	$(CC) y.tab.c $(OBJ) $(LFLAGS) -o cmm 
+	@rm y.tab.c  lex.yy.c
 
-env.o	: env.c env.h
-	$(CC) -c env.c
+y.tab.c	: src/cmm.y lex.yy.c
+	$(YACC) src/cmm.y
 
-lex.yy.c	: cmm.l
-	$(LEX) cmm.l
+$(OBJ)	: src/code.c src/env.c $(OBJ_DIR)
+	$(CC) -c src/code.c -o obj/code.o $(LFLAGS) 
+	$(CC) -c src/env.c -o obj/env.o $(LFLAGS) 
+
+lex.yy.c	: src/cmm.l
+	$(LEX) src/cmm.l
+
+$(OBJ_DIR)	:
+	mkdir obj
 
 clean	:
-	rm -f *~ *.tab.* *.o lex.yy.c
+	rm -rf *~ *.tab.* lex.yy.c obj code.output
 
 cleanall	: clean
-	rm -f cmm code.output
+	rm -f cmm 
+
+test	: $(PROGRAM) test.sh
+	sh test.sh
+	@rm -rf *~ *.tab.* lex.yy.c obj code.output
