@@ -1,6 +1,11 @@
 main {
-     var x;
-     x := 1 + 2;
-     write x;
+     var x,y;
+     read x;
+     y := 0;
+     while x > 0 do{
+     	  y := y + x;
+	  x := x - 1;
+     }
+     write y;
      writeln;
 }
